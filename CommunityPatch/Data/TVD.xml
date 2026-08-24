@@ -5,12 +5,16 @@
 		Side="NOD"
 		EditorSorting="SYSTEM"
 		CommandSet="EmptyCommandSet"
-		KindOf="NO_COLLIDE IMMOBILE UNATTACKABLE INERT_SHROUD_REVEALER NOT_AUTOACQUIRABLE IGNORE_FOR_VICTORY"
+		KindOf="NO_COLLIDE IMMOBILE UNATTACKABLE INERT_SHROUD_REVEALER NOT_AUTOACQUIRABLE IGNORE_FOR_VICTORY AIRCRAFT"
 		RadarPriority="STRUCTURE"
 		EditorName="VeinDetonationChunk">
 		<DisplayName>VeinDetonationChunk</DisplayName>
 		<ArmorSet
 			Armor="NoArmor" />
+		<LocomotorSet
+			Locomotor="FlyingShadowLocomotor"
+			Condition="NORMAL"
+			Speed="0" />
 		<Draws>
 			<ScriptedModelDraw
 				id="ModuleTag_Draw"
@@ -52,7 +56,12 @@
 			<Shape
 				Type="CYLINDER"
 				MajorRadius="10.0"
-				Height="12.0"/>
+				Height="12.0">		
+			<Offset
+					x="0"
+					y="35"
+					z="0" />
+			</Shape>
 		</Geometry>
 		<!-- no worky-
 		<AudioArraySound>
@@ -66,12 +75,16 @@
 		Side="NOD"
 		EditorSorting="SYSTEM"
 		CommandSet="EmptyCommandSet"
-		KindOf="NO_COLLIDE IMMOBILE UNATTACKABLE INERT_SHROUD_REVEALER NOT_AUTOACQUIRABLE IGNORE_FOR_VICTORY"
+		KindOf="NO_COLLIDE IMMOBILE UNATTACKABLE INERT_SHROUD_REVEALER NOT_AUTOACQUIRABLE IGNORE_FOR_VICTORY AIRCRAFT"
 		RadarPriority="STRUCTURE"
 		EditorName="NODVeinDetonationTrigger">
 		<DisplayName>NODVeinDetonationTrigger</DisplayName>
 		<ArmorSet
 			Armor="NoArmor" />
+		<LocomotorSet
+			Locomotor="FlyingShadowLocomotor"
+			Condition="NORMAL"
+			Speed="0" />
 		<Draws>
 			<ScriptedModelDraw
 				id="ModuleTag_Draw"
@@ -121,7 +134,12 @@
 				Type="BOX"
 				MajorRadius="10.0"
 				MinorRadius = "1.0"
-				Height="3.0"/>
+				Height="3.0">
+				<Offset
+					x="0"
+					y="35"
+					z="0" />
+			</Shape>
 		</Geometry>
 	</GameObject>
     

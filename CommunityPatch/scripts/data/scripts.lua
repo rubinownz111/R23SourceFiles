@@ -3712,7 +3712,7 @@ squadSizeTable = {
 	["4803957E"] = {size = 3, needsRocketFix = false, isAirborne = false}, -- Traveler59ShockTrooperSquad
 	["9676826C"] = {size = 3, needsRocketFix = false, isAirborne = false}, -- Traveler59ShockTrooperSquad_Veteran
 	["40241AC3"] = {size = 3, needsRocketFix = false, isAirborne = false}, -- Reaper17ShockTrooperSquad
-	["34BC82E3"] = {size = 0, needsRocketFix = false, isAirborne = false}, -- Reaper17ShockTrooperSquad_Veteran
+	["34BC82E3"] = {size = 3, needsRocketFix = false, isAirborne = false}, -- Reaper17ShockTrooperSquad_Veteran
 
 	["C46CECA2"] = {size = 5, needsRocketFix = false, isAirborne = false}, -- Traveler59CultistSquad
 
@@ -3848,11 +3848,40 @@ function ApplyXPModifier(tableObj)
 	--print("applying xp modifier")
 	local timesPromoted = tableObj.timesPromotedWithLua
 	local upgrades = {
-		["1"] = "Upgrade_200scaler",
-		["2"] = "Upgrade_300scaler"
+		[1] = "Upgrade_200scaler",
+		[2] = "Upgrade_300scaler"
 	}
 
-	-- REMOVE UPGRADEES IF THEY EXIST
+	RemoveXPUpgrades(tableObj)
+	-- APPLY THE APPROPRIATE UPGRADE 
+	if upgrades[timesPromoted] then 
+		if not EvaluateCondition("UNIT_HAS_UPGRADE",tableObj.stringRef, upgrades[timesPromoted]) then ObjectGrantUpgrade(tableObj.selfRef, upgrades[timesPromoted]) end
+	end
+end
+
+-- if the squad object promotes then the members and/or leader has officially caught up with the rank of it and therefore we should remove the scaler upgrades. Triggered by LEVELED
+function RemoveXPModifier(self)
+	local _,squad = GetSquadAttributes(self)
+	if squad.squadLeader ~= nil then
+			local leader = squadMemberTable[squad.squadLeader]
+			if leader ~= nil and leader.timesPromotedWithLua > 0 then
+					RemoveXPUpgrades(leader)
+					--print("removed xp modifier from the leader!")
+					leader.timesPromotedWithLua = 0
+			end
+	end
+	for squadMemberId,_ in squad.squadMembers do
+			local member = squadMemberTable[squadMemberId]
+			if member ~= nil and member.timesPromotedWithLua > 0 then
+					RemoveXPUpgrades(member)
+					--print("removed xp modifier from a squad member!")
+					member.timesPromotedWithLua = 0
+			end
+	end
+end
+
+function RemoveXPUpgrades(tableObj)
+	if tableObj == nil then return end
 	if EvaluateCondition("UNIT_HAS_UPGRADE",tableObj.stringRef, "Upgrade_200scaler") then
 		ObjectRemoveUpgrade(tableObj.selfRef, "Upgrade_200scaler")
 	end
@@ -3860,9 +3889,6 @@ function ApplyXPModifier(tableObj)
 	if EvaluateCondition("UNIT_HAS_UPGRADE",tableObj.stringRef, "Upgrade_300scaler") then
 		ObjectRemoveUpgrade(tableObj.selfRef, "Upgrade_300scaler")
 	end
-
-	-- APPLY THE APPROPRIATE UPGRADE 
-	if not EvaluateCondition("UNIT_HAS_UPGRADE",tableObj.stringRef, upgrades[tostring(timesPromoted)]) then ObjectGrantUpgrade(tableObj.selfRef, upgrades[tostring(timesPromoted)]) end
 end
 
 function CheckForPassengers(self)
@@ -3908,7 +3934,7 @@ function GarrisonedInHammerhead(self)
 			-- if desync then its probably because of the prerequisites
 			ExecuteAction("UNIT_GIVE_EXPERIENCE_LEVEL", squadLeader.stringRef, squadLevelString)
 			squadLeader.timesPromotedWithLua = (squadLevel-leaderLevel)
-			-- apply xp modifier to this unit
+			-- apply xp modifier to this unit and remove it when it reaches the squad level, if the squad object promotes check if a modifier exists and remove it.
 			ApplyXPModifier(squadLeader)
 		end
 	end
@@ -3949,7 +3975,7 @@ function GarrisonedInHammerheadEnd(self)
 				-- if desync then its probably because of the prerequisites
 				ExecuteAction("UNIT_GIVE_EXPERIENCE_LEVEL", squadMemberTable[objId].stringRef, squadLevelString)
 				squadMemberTable[objId].timesPromotedWithLua = (squadLevel-memberLevel)
-				-- apply xp modifier to this unit
+				-- apply xp modifier to this unit and remove it when it reaches the squad level, if the squad object promotes check if a modifier exists and remove it.
 				ApplyXPModifier(squadMemberTable[objId])
 			end
 		end
@@ -4036,7 +4062,7 @@ function OnSquadExitRax_R24(self, isHealed)
 	local squadData = squadSizeTable[getObjectName(squad.selfRef)]
 	local squadSize = getTableSize(squad.squadMembers)
 	-- used for hammerhead garrisoned squads that can fire over structures
-	if squadSize == nil then return end
+	if squadSize == 0 then return end
 	squad.spawnedSize = squadSize
 	--if isHealed then print("has come out of the armory!") end
 	if strfind(tostring(ObjectTeamName(self)), "Player_") ~= nil and not isHealed and not squadData.isAirborne and not ObjectTestModelCondition(self, "USER_10") then 
@@ -4136,7 +4162,7 @@ function OnMemberDestroyed_R24(self)
 	if firstKey ~= nil and next(squad.squadMembers, firstKey) == nil then
 		-- if the one member remaining is the leader, kill the squad
 		local remainingMember = squadMemberTable[firstKey]
-		if remainingMember.isLeader then
+		if remainingMember ~= nil and remainingMember.isLeader then
 			--print("squad leader is all thats left, deleting the squad.")
 			-- NAMED_KILL to prevent null pointer crashes
 			ExecuteAction("NAMED_KILL", remainingMember.selfRef)

@@ -85,7 +85,7 @@
 			<Shape
 				Type="CYLINDER"
 				MajorRadius="0.8"
-				Height="500"></Shape>
+				Height="500" />
 		</Geometry>
 		<AudioArraySound>
 			<AudioEntry Sound="AudioEvent:GDI_ThorsHammer_Incoming" AudioType="soundAmbient" />

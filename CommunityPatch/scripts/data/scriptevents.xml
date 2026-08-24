@@ -1172,6 +1172,8 @@
 		<!-- on garrison event -->
 		<EventHandler EventName="OnInsideGarrison"	ScriptFunctionName="SetToUnselectableOnGarrisonStructure" DebugSingleStep="false"/>
 		<EventHandler EventName="OnInsideGarrisonEnd"	ScriptFunctionName="SetToUnselectableOnGarrisonStructureEnd" DebugSingleStep="false"/>
+		<!-- this prevents overcounting once the squad levels up with an xp modifier enabled -->
+		<EventHandler EventName="OnLeveledUp"	ScriptFunctionName="RemoveXPModifier" DebugSingleStep="false"/>
 	</EventList>
 
 	<!-- disciple and confessor squad inf -->
@@ -1245,6 +1247,8 @@
 		<!-- on garrison event -->
 		<EventHandler EventName="OnInsideGarrison"	ScriptFunctionName="SetToUnselectableOnGarrisonStructure" DebugSingleStep="false"/>
 		<EventHandler EventName="OnInsideGarrisonEnd"	ScriptFunctionName="SetToUnselectableOnGarrisonStructureEnd" DebugSingleStep="false"/>
+		<!-- this prevents overcounting once the squad levels up with an xp modifier enabled -->
+		<EventHandler EventName="OnLeveledUp"	ScriptFunctionName="RemoveXPModifier" DebugSingleStep="false"/>
 	</EventList>  
 
 	<EventList Name="NodCyborgSquadFunctions_R24" Inherit="GenericSquadFunctions_R24">

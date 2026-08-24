@@ -2,6 +2,7 @@
 <AssetDeclaration xmlns="uri:ea.com:eala:asset">
 
 	<Includes>
+		<Include source="Props/GDIShockwaveArtillerySeed.xml" type="all"/>
 		<Include source="Units/GDIMissileSoldier.xml" type="all"/>
 		<Include source="Units/GDIMissileSoldierGarrisoned.xml" type="all"/>
 		<Include source="Units/GDIGrenadeSoldierGarrisoned.xml" type="all"/>
@@ -52,7 +53,6 @@
 		<Include source="Units/GDIMCV.xml" type="all"/>
 		<Include source="Units/GDICommando.xml" type="all"/>
 		<Include source="Units/GDIDigInBuilding.xml" type="all"/>	
-		<Include source="IonCannonEffect.xml" type="all"/>
 		<Include source="Units/GDIRifleSoldierVeteran.xml" type="all"/>
 		<Include source="Units/GDIMissileSoldierVeteran.xml" type="all"/>
 		<Include source="Units/GDIMissileSoldierVeteranSquad.xml" type="all"/>

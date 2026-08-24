@@ -151,7 +151,7 @@
 			<Shape
 				Type="CYLINDER"
 				MajorRadius="50.0"
-				Height="300.0"></Shape>
+				Height="300.0" />
 		</Geometry>
 <!--
 		<AudioArraySound>

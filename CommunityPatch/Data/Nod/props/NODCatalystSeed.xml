@@ -69,8 +69,7 @@
 			<Shape
 				Type="SPHERE"
 				MajorRadius="1.0"
-				Height="1.0">			
-			</Shape>
+				Height="1.0" />		
 		</Geometry>
 	</GameObject>
 </AssetDeclaration>

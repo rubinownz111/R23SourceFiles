@@ -15,7 +15,6 @@
 		<Target>ZOCOMZoneRaiderSquad_Veteran</Target>
 		<Target>ZOCOMZoneRaiderSquad</Target>
 		<Target>ZOCOMZoneRaider</Target>
-		<Target>ZOCOMZoneRaiderGarrisoned</Target>
 		<Decal
 			Texture="decal_G_level1"
 			Texture2="decal_Good_CO" 
@@ -43,7 +42,6 @@
 		<Target>ZOCOMZoneRaiderSquad_Veteran</Target>
 		<Target>ZOCOMZoneRaiderSquad</Target>
 		<Target>ZOCOMZoneRaider</Target>
-		<Target>ZOCOMZoneRaiderGarrisoned</Target>
 		<AttributeModifier>Unit_Veteran</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -72,7 +70,6 @@
 		<Target>ZOCOMZoneRaiderSquad_Veteran</Target>
 		<Target>ZOCOMZoneRaiderSquad</Target>
 		<Target>ZOCOMZoneRaider</Target>
-		<Target>ZOCOMZoneRaiderGarrisoned</Target>
 		<AttributeModifier>Unit_Elite</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -101,7 +98,6 @@
 		<Target>ZOCOMZoneRaiderSquad_Veteran</Target>
 		<Target>ZOCOMZoneRaiderSquad</Target>
 		<Target>ZOCOMZoneRaider</Target>
-		<Target>ZOCOMZoneRaiderGarrisoned</Target>
 		<AttributeModifier>Unit_Heroic</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -547,7 +543,6 @@
 		<Target>GDIZoneTrooperSquad_Veteran</Target>
 		<Target>GDIZoneTrooperSquad</Target>
 		<Target>GDIZoneTrooper</Target>
-		<Target>GDIZoneTrooperGarrisoned</Target>
 		<Decal
 			Texture="decal_G_level1"
 			Texture2="decal_Good_CO" 
@@ -575,7 +570,6 @@
 		<Target>GDIZoneTrooperSquad_Veteran</Target>
 		<Target>GDIZoneTrooperSquad</Target>
 		<Target>GDIZoneTrooper</Target>
-		<Target>GDIZoneTrooperGarrisoned</Target>
 		<AttributeModifier>Unit_Veteran</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -604,7 +598,6 @@
 		<Target>GDIZoneTrooperSquad_Veteran</Target>
 		<Target>GDIZoneTrooperSquad</Target>
 		<Target>GDIZoneTrooper</Target>
-		<Target>GDIZoneTrooperGarrisoned</Target>
 		<AttributeModifier>Unit_Elite</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -633,7 +626,6 @@
 		<Target>GDIZoneTrooperSquad_Veteran</Target>
 		<Target>GDIZoneTrooperSquad</Target>
 		<Target>GDIZoneTrooper</Target>
-		<Target>GDIZoneTrooperGarrisoned</Target>
 		<AttributeModifier>Unit_Heroic</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -660,7 +652,6 @@
 		<Target>GDIRifleSoldierSquad_Veteran</Target>
 		<Target>GDIRifleSoldierSquad</Target>
 		<Target>GDIRifleSoldier</Target>
-		<Target>GDIRifleSoldierGarrisoned</Target>
 		<Decal
 			Texture="decal_G_level1"
 			Texture2="decal_Good_CO" 
@@ -688,7 +679,6 @@
 		<Target>GDIRifleSoldierSquad_Veteran</Target>
 		<Target>GDIRifleSoldierSquad</Target>
 		<Target>GDIRifleSoldier</Target>
-		<Target>GDIRifleSoldierGarrisoned</Target>
 		<AttributeModifier>Unit_Veteran</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -717,7 +707,6 @@
 		<Target>GDIRifleSoldierSquad_Veteran</Target>
 		<Target>GDIRifleSoldierSquad</Target>
 		<Target>GDIRifleSoldier</Target>
-		<Target>GDIRifleSoldierGarrisoned</Target>
 		<AttributeModifier>Unit_Elite</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -746,7 +735,6 @@
 		<Target>GDIRifleSoldierSquad_Veteran</Target>
 		<Target>GDIRifleSoldierSquad</Target>
 		<Target>GDIRifleSoldier</Target>
-		<Target>GDIRifleSoldierGarrisoned</Target>
 		<AttributeModifier>Unit_Heroic</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -772,7 +760,6 @@
 			b="1.0" />
 		<Target>GDIGrenadeSoldierSquad</Target>
 		<Target>GDIGrenadeSoldier</Target>
-		<Target>GDIGrenadeSoldierGarrisoned</Target>
 		<Decal
 			Texture="decal_G_level1"
 			Texture2="decal_Good_CO"
@@ -799,7 +786,6 @@
 			FxList="FX_GDILevelUp_01" />
 		<Target>GDIGrenadeSoldierSquad</Target>
 		<Target>GDIGrenadeSoldier</Target>
-		<Target>GDIGrenadeSoldierGarrisoned</Target>
 		<AttributeModifier>Unit_Veteran</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -827,7 +813,6 @@
 			FxList="FX_GDILevelUp_02" />
 		<Target>GDIGrenadeSoldierSquad</Target>
 		<Target>GDIGrenadeSoldier</Target>
-		<Target>GDIGrenadeSoldierGarrisoned</Target>
 		<AttributeModifier>Unit_Elite</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -855,7 +840,6 @@
 			FxList="FX_GDILevelUp_03" />
 		<Target>GDIGrenadeSoldierSquad</Target>
 		<Target>GDIGrenadeSoldier</Target>
-		<Target>GDIGrenadeSoldierGarrisoned</Target>
 		<AttributeModifier>Unit_Heroic</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -885,7 +869,6 @@
 			<Target>SteelTalonsRifleSoldierSquad_Veteran</Target>
 			<Target>SteelTalonsRifleSoldierSquad</Target>
 			<Target>SteelTalonsRifleSoldier</Target>
-			<Target>SteelTalonsRifleSoldierGarrisoned</Target>
 			<Decal
 				Texture="decal_G_level1"
 				Texture2="decal_Good_CO" 
@@ -913,7 +896,6 @@
 			<Target>SteelTalonsRifleSoldierSquad_Veteran</Target>
 			<Target>SteelTalonsRifleSoldierSquad</Target>
 			<Target>SteelTalonsRifleSoldier</Target>
-			<Target>SteelTalonsRifleSoldierGarrisoned</Target>
 			<AttributeModifier>Unit_Veteran</AttributeModifier>
 			<Decal
 				Texture="decal_G_level1"
@@ -942,7 +924,6 @@
 			<Target>SteelTalonsRifleSoldierSquad_Veteran</Target>
 			<Target>SteelTalonsRifleSoldierSquad</Target>
 			<Target>SteelTalonsRifleSoldier</Target>
-			<Target>SteelTalonsRifleSoldierGarrisoned</Target>
 			<AttributeModifier>Unit_Elite</AttributeModifier>
 			<Decal
 				Texture="decal_G_level1"
@@ -971,7 +952,6 @@
 			<Target>SteelTalonsRifleSoldierSquad_Veteran</Target>
 			<Target>SteelTalonsRifleSoldierSquad</Target>
 			<Target>SteelTalonsRifleSoldier</Target>
-			<Target>SteelTalonsRifleSoldierGarrisoned</Target>
 			<AttributeModifier>Unit_Heroic</AttributeModifier>
 			<Decal
 				Texture="decal_G_level1"
@@ -995,7 +975,6 @@
 			b="1.0" />
 		<Target>SteelTalonsGrenadeSoldierSquad</Target>
 		<Target>SteelTalonsGrenadeSoldier</Target>
-		<Target>SteelTalonsGrenadeSoldierGarrisoned</Target>
 		<Decal
 			Texture="decal_G_level1"
 			Texture2="decal_Good_CO" 
@@ -1022,7 +1001,6 @@
 			FxList="FX_GDILevelUp_01" />
 		<Target>SteelTalonsGrenadeSoldierSquad</Target>
 		<Target>SteelTalonsGrenadeSoldier</Target>
-		<Target>SteelTalonsGrenadeSoldierGarrisoned</Target>
 		<AttributeModifier>Unit_Veteran</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -1050,7 +1028,6 @@
 			FxList="FX_GDILevelUp_02" />
 		<Target>SteelTalonsGrenadeSoldierSquad</Target>
 		<Target>SteelTalonsGrenadeSoldier</Target>
-		<Target>SteelTalonsGrenadeSoldierGarrisoned</Target>
 		<AttributeModifier>Unit_Elite</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -1078,7 +1055,6 @@
 			FxList="FX_GDILevelUp_03" />
 		<Target>SteelTalonsGrenadeSoldierSquad</Target>
 		<Target>SteelTalonsGrenadeSoldier</Target>
-		<Target>SteelTalonsGrenadeSoldierGarrisoned</Target>
 		<AttributeModifier>Unit_Heroic</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -1103,7 +1079,6 @@
 			<Target>SteelTalonsMissileSoldierSquad_Veteran</Target>
 			<Target>SteelTalonsMissileSoldierSquad</Target>
 			<Target>SteelTalonsMissileSoldier</Target>
-			<Target>SteelTalonsMissileSoldierGarrisoned</Target>
 			<Decal
 				Texture="decal_G_level1"
 				Texture2="decal_Good_CO" 
@@ -1131,7 +1106,6 @@
 			<Target>SteelTalonsMissileSoldierSquad_Veteran</Target>
 			<Target>SteelTalonsMissileSoldierSquad</Target>
 			<Target>SteelTalonsMissileSoldier</Target>
-			<Target>SteelTalonsMissileSoldierGarrisoned</Target>
 			<AttributeModifier>Unit_Veteran</AttributeModifier>
 			<Decal
 				Texture="decal_G_level1"
@@ -1160,7 +1134,6 @@
 			<Target>SteelTalonsMissileSoldierSquad_Veteran</Target>
 			<Target>SteelTalonsMissileSoldierSquad</Target>
 			<Target>SteelTalonsMissileSoldier</Target>
-			<Target>SteelTalonsMissileSoldierGarrisoned</Target>
 			<AttributeModifier>Unit_Elite</AttributeModifier>
 			<Decal
 				Texture="decal_G_level1"
@@ -1189,7 +1162,6 @@
 			<Target>SteelTalonsMissileSoldierSquad_Veteran</Target>
 			<Target>SteelTalonsMissileSoldierSquad</Target>
 			<Target>SteelTalonsMissileSoldier</Target>
-			<Target>SteelTalonsMissileSoldierGarrisoned</Target>
 			<AttributeModifier>Unit_Heroic</AttributeModifier>
 			<Decal
 				Texture="decal_G_level1"
@@ -1213,7 +1185,6 @@
 			b="1.0" />
 		<Target>ZOCOMGrenadeSoldierSquad</Target>
 		<Target>ZOCOMGrenadeSoldier</Target>
-		<Target>ZOCOMGrenadeSoldierGarrisoned</Target>
 		<Decal
 			Texture="decal_G_level1"
 			Texture2="decal_Good_CO" 
@@ -1240,7 +1211,6 @@
 			FxList="FX_GDILevelUp_01" />
 		<Target>ZOCOMGrenadeSoldierSquad</Target>
 		<Target>ZOCOMGrenadeSoldier</Target>
-		<Target>ZOCOMGrenadeSoldierGarrisoned</Target>
 		<AttributeModifier>Unit_Veteran</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -1268,7 +1238,6 @@
 			FxList="FX_GDILevelUp_02" />
 		<Target>ZOCOMGrenadeSoldierSquad</Target>
 		<Target>ZOCOMGrenadeSoldier</Target>
-		<Target>ZOCOMGrenadeSoldierGarrisoned</Target>
 		<AttributeModifier>Unit_Elite</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"
@@ -1296,7 +1265,6 @@
 			FxList="FX_GDILevelUp_03" />
 		<Target>ZOCOMGrenadeSoldierSquad</Target>
 		<Target>ZOCOMGrenadeSoldier</Target>
-		<Target>ZOCOMGrenadeSoldierGarrisoned</Target>
 		<AttributeModifier>Unit_Heroic</AttributeModifier>
 		<Decal
 			Texture="decal_G_level1"

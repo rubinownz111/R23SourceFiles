@@ -7,11 +7,15 @@
 		id="NODCatalystMissileSeed"
 		Side="NOD"
 		EditorSorting="SYSTEM"
-		KindOf="IMMOBILE NO_COLLIDE NOT_AUTOACQUIRABLE IGNORE_FOR_VICTORY RESIST_EMP"
+		KindOf="IMMOBILE NO_COLLIDE NOT_AUTOACQUIRABLE IGNORE_FOR_VICTORY RESIST_EMP AIRCRAFT"
 		EditorName="NODCatalystMissileSeed">
 		<DisplayName>NODCatalystMissileSeed</DisplayName>
 		<ArmorSet
 			Armor="NoArmor" />
+		<LocomotorSet
+			Locomotor="FlyingShadowLocomotor"
+			Condition="NORMAL"
+			Speed="0" />
 		<Draws>
 			<ScriptedModelDraw
 				id="ModuleTag_Draw"
@@ -64,7 +68,12 @@
 			<Shape
 				Type="CYLINDER"
 				MajorRadius="2.0"
-				Height="10.0"/>
+				Height="10.0">
+			<Offset
+					x="0"
+					y="35"
+					z="0" />
+			</Shape>
 		</Geometry>
 	</GameObject>
 </AssetDeclaration>
