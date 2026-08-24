@@ -1,0 +1,253 @@
+name: Apply R25h review fixes
+
+on:
+  push:
+    branches:
+      - fix/r25h-review-findings
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the review branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/r25h-review-findings
+          fetch-depth: 0
+
+      - name: Apply focused R25h fixes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          scripts_path = Path("CommunityPatch/scripts/data/scripts.lua")
+          text = scripts_path.read_text(encoding="utf-8")
+
+          def replace_once(source: str, old: str, new: str, label: str) -> str:
+              count = source.count(old)
+              if count != 1:
+                  raise SystemExit(f"{label}: expected exactly one match, found {count}")
+              return source.replace(old, new, 1)
+
+          # Remove a duplicate metadata key before extending the entries below.
+          text = replace_once(
+              text,
+              'experienceLvlString = "GDIZoneTrooperSquadExperienceLevel_", isAirborne = false, isAirborne = false',
+              'experienceLvlString = "GDIZoneTrooperSquadExperienceLevel_", isAirborne = false',
+              "duplicate GDIZoneTrooper isAirborne flag",
+          )
+
+          # The generated Hammerhead banner carrier has its own zero-XP level
+          # templates. Keep the normal prefix for horde members and add a
+          # dedicated prefix for the temporary banner carrier.
+          banner_prefixes = {
+              "GDIZoneTrooperSquadExperienceLevel_": ("GDIZoneTrooperGarrisonedExperienceLevel_", 2),
+              "GDIRifleSoldierSquadExperienceLevel_": ("GDIRifleSoldierGarrisonedExperienceLevel_", 2),
+              "GDIGrenadeSoldierSquadExperienceLevel_": ("GDIGrenadeSoldierGarrisonedExperienceLevel_", 1),
+              "GDIMissileSoldierSquadExperienceLevel_": ("GDIMissileSoldierGarrisonedExperienceLevel_", 2),
+              "ZOCOMZoneRaiderSquadExperienceLevel_": ("ZOCOMZoneRaiderGarrisonedExperienceLevel_", 2),
+              "ZOCOMRifleSoldierSquadExperienceLevel_": ("ZOCOMRifleSoldierGarrisonedExperienceLevel_", 2),
+              "ZOCOMGrenadeSoldierSquadExperienceLevel_": ("ZOCOMGrenadeSoldierGarrisonedExperienceLevel_", 1),
+              "ZOCOMMissileSoldierSquadExperienceLevel_": ("ZOCOMMissileSoldierGarrisonedExperienceLevel_", 2),
+              "SteelTalonsRifleSoldierSquadExperienceLevel_": ("SteelTalonsRifleSoldierGarrisonedExperienceLevel_", 2),
+              "SteelTalonsGrenadeSoldierSquadExperienceLevel_": ("SteelTalonsGrenadeSoldierGarrisonedExperienceLevel_", 1),
+              "SteelTalonsMissileSoldierSquadExperienceLevel_": ("SteelTalonsMissileSoldierGarrisonedExperienceLevel_", 2),
+              "MutantMarauderSquadExperienceLevel_": ("MutantMarauderGarrisonedExperienceLevel_", 1),
+          }
+
+          for normal_prefix, (banner_prefix, expected_count) in banner_prefixes.items():
+              marker = f'experienceLvlString = "{normal_prefix}"'
+              count = text.count(marker)
+              if count != expected_count:
+                  raise SystemExit(
+                      f"{normal_prefix}: expected {expected_count} metadata entries, found {count}"
+                  )
+              replacement = (
+                  marker
+                  + f', bannerExperienceLvlString = "{banner_prefix}"'
+              )
+              text = text.replace(marker, replacement)
+
+          # Never pass a nil upgrade name into SAGE when a rookie object is
+          # promoted directly to heroic (a rank gap of three).
+          apply_start = text.index("function ApplyXPModifier(tableObj)")
+          apply_end = text.index("\n-- if the squad object promotes", apply_start)
+          apply_replacement = '''function ApplyXPModifier(tableObj)
+          \tif tableObj == nil then return end
+
+          \tlocal upgrades = {
+          \t\t["1"] = "Upgrade_200scaler",
+          \t\t["2"] = "Upgrade_300scaler"
+          \t}
+
+          \tRemoveXPUpgrades(tableObj)
+
+          \tlocal upgrade = upgrades[tostring(tableObj.timesPromotedWithLua)]
+          \tif upgrade == nil then return end
+
+          \tif not EvaluateCondition("UNIT_HAS_UPGRADE", tableObj.stringRef, upgrade) then
+          \t\tObjectGrantUpgrade(tableObj.selfRef, upgrade)
+          \tend
+          end
+          '''
+          text = text[:apply_start] + apply_replacement + text[apply_end:]
+
+          # Promote the generated leader with its zero-XP banner template,
+          # while leaving the ordinary member promotion path unchanged.
+          leader_start = text.index("function GarrisonedInHammerhead(self)")
+          leader_end = text.index("\nfunction GarrisonedInHammerheadEnd(self)", leader_start)
+          leader_block = text[leader_start:leader_end]
+          if leader_block.count("squadData.experienceLvlString") != 2:
+              raise SystemExit("unexpected Hammerhead leader experience-prefix layout")
+          leader_block = leader_block.replace(
+              "squadData.experienceLvlString",
+              "squadData.bannerExperienceLvlString",
+          )
+          if leader_block.count("squadLevelString") < 2:
+              raise SystemExit("unexpected Hammerhead leader level-string layout")
+          leader_block = leader_block.replace("squadLevelString", "bannerLevelString")
+          text = text[:leader_start] + leader_block + text[leader_end:]
+
+          # Validate squad metadata before dereferencing it, and pass the same
+          # validated record into the exploit check instead of looking it up again.
+          exit_start = text.index("function OnSquadExitRax_R24(self, isHealed)")
+          exit_end = text.index("\nfunction isSquadExploit", exit_start)
+          exit_block = text[exit_start:exit_end]
+          exit_block = replace_once(
+              exit_block,
+              "if squadSize == 0 then return end",
+              "if squadData == nil or squadSize == 0 then return end",
+              "OnSquadExitRax metadata guard",
+          )
+          exit_block = replace_once(
+              exit_block,
+              "isSquadExploit(squad)",
+              "isSquadExploit(squad, squadData)",
+              "OnSquadExitRax exploit call",
+          )
+          text = text[:exit_start] + exit_block + text[exit_end:]
+
+          exploit_start = text.index("function isSquadExploit")
+          exploit_end = text.index("\n-- horde member killed", exploit_start)
+          exploit_block = text[exploit_start:exploit_end]
+          exploit_block = replace_once(
+              exploit_block,
+              "function isSquadExploit(squad)",
+              "function isSquadExploit(squad, squadData)",
+              "isSquadExploit signature",
+          )
+          exploit_block = replace_once(
+              exploit_block,
+              "if squad == nil then return end",
+              "if squad == nil or squadData == nil then return end",
+              "isSquadExploit guard",
+          )
+          lookup = "squadSizeTable[tostring(getObjectName(squad.selfRef))].size"
+          if exploit_block.count(lookup) < 1:
+              raise SystemExit("isSquadExploit metadata lookup not found")
+          exploit_block = exploit_block.replace(lookup, "squadData.size")
+          text = text[:exploit_start] + exploit_block + text[exploit_end:]
+
+          # Make the two upgrade callbacks harmless if SAGE delivers a late
+          # event after the corresponding squad table has already been removed.
+          grant_start = text.index("function GrantUpgradesToLeader(squad)")
+          grant_end = text.index("\n-- triggered by +RIDER4", grant_start)
+          grant_block = text[grant_start:grant_end]
+          grant_block = replace_once(
+              grant_block,
+              "function GrantUpgradesToLeader(squad)\n",
+              "function GrantUpgradesToLeader(squad)\n\tif squad == nil then return end\n\tlocal squadData = squadSizeTable[getObjectName(squad.selfRef)]\n\tif squadData == nil then return end\n",
+              "GrantUpgradesToLeader guard",
+          )
+          grant_block = replace_once(
+              grant_block,
+              "local isZoneRaiderSquad = squadSizeTable[getObjectName(squad.selfRef)].needsRocketFix",
+              "local isZoneRaiderSquad = squadData.needsRocketFix",
+              "GrantUpgradesToLeader metadata reuse",
+          )
+          text = text[:grant_start] + grant_block + text[grant_end:]
+
+          upgraded_start = text.index("function SquadHasBeenUpgraded(self)")
+          upgraded_end = text.index("\nfunction OnSquadDestroyed_R24", upgraded_start)
+          upgraded_replacement = '''function SquadHasBeenUpgraded(self)
+          \t--print("unit upgraded")
+          \tlocal _,squadMember = GetSquadMemberAttributes(self)
+          \tif squadMember.squadObject == nil then return end
+          \tlocal squad = squadTables[squadMember.squadObject]
+          \tif squad == nil then return end
+          \tGrantUpgradesToLeader(squad)
+          end
+          '''
+          text = text[:upgraded_start] + upgraded_replacement + text[upgraded_end:]
+
+          scripts_path.write_text(text, encoding="utf-8")
+
+          # Restore IonCannonEffect to the path already referenced by GDI.xml.
+          ion_source = Path("CommunityPatch/Data/IonCannonEffect.xml")
+          ion_target = Path("CommunityPatch/Data/GDI/IonCannonEffect.xml")
+          if ion_source.exists() and not ion_target.exists():
+              ion_source.replace(ion_target)
+          elif not ion_source.exists() and ion_target.exists():
+              pass
+          else:
+              raise SystemExit(
+                  "IonCannonEffect move expected exactly one source file at the root path"
+              )
+
+          # Source-level assertions for every focused correction.
+          final_text = scripts_path.read_text(encoding="utf-8")
+          required = [
+              "local upgrade = upgrades[tostring(tableObj.timesPromotedWithLua)]",
+              "if upgrade == nil then return end",
+              "squadData.bannerExperienceLvlString",
+              "if squadData == nil or squadSize == 0 then return end",
+              "function isSquadExploit(squad, squadData)",
+              "local isZoneRaiderSquad = squadData.needsRocketFix",
+          ]
+          for marker in required:
+              if marker not in final_text:
+                  raise SystemExit(f"post-patch assertion failed: {marker}")
+
+          banner_xml = Path(
+              "CommunityPatch/Data/GlobalData/ExperienceLevelsR25Banners.xml"
+          ).read_text(encoding="utf-8")
+          for banner_prefix, _ in banner_prefixes.values():
+              if f'id="{banner_prefix}1"' not in banner_xml:
+                  raise SystemExit(f"missing banner experience template: {banner_prefix}1")
+          PY
+
+      - name: Validate and commit the focused patch
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -f CommunityPatch/Data/GDI/IonCannonEffect.xml
+          test ! -e CommunityPatch/Data/IonCannonEffect.xml
+          grep -F '<Include source="IonCannonEffect.xml" type="all"/>' CommunityPatch/Data/GDI/GDI.xml
+
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+
+          for path in (
+              "CommunityPatch/Data/GDI/IonCannonEffect.xml",
+              "CommunityPatch/Data/GDI/GDI.xml",
+              "CommunityPatch/Data/GlobalData/ExperienceLevelsR25Banners.xml",
+          ):
+              ET.parse(path)
+          PY
+
+          git diff --check
+          git config user.name "Rubin Shkalla"
+          git config user.email "199379259+rubinownz111@users.noreply.github.com"
+          git add CommunityPatch/scripts/data/scripts.lua \
+                  CommunityPatch/Data/GDI/IonCannonEffect.xml \
+                  CommunityPatch/Data/IonCannonEffect.xml
+          git commit -m "Fix R25h Hammerhead XP and Ion Cannon integration"
+          git push origin HEAD:fix/r25h-review-findings
